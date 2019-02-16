@@ -1,0 +1,15 @@
+{
+    "name": "pgsavis/design-patterns",
+    "authors": [
+        {
+            "name": "Sayyed Jamal Ghasemi",
+            "email": "jamal13647850@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload" : {
+        "psr-4" : {
+            "App\\" : "app/"
+        }
+    }
+}
