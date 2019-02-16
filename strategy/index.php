@@ -5,59 +5,54 @@
  * Date: 2/16/2019
  * Time: 11:53 PM
  */
-class Zarinpal{
+
+interface Gateway{
+    public function setInfo($info);
+    public function pay();
+}
+
+class Zarinpal implements Gateway {
     protected $info;
 
     public function setInfo($info){
         $this->info = $info;
     }
-    public function payment(){
+
+    public function pay()
+    {
         return $this->info;
     }
 }
 
-class Mellat{
+class Mellat implements Gateway {
     protected $info;
 
-    public function addInfo($info){
-        $this->info = $info;
-    }
     public function pay(){
         return $this->info;
+    }
+
+    public function setInfo($info)
+    {
+        $this->info = $info;
     }
 }
 
 class payment{
     protected $gateway;
-    public function gateway($gateway){
-        if($gateway == 'zarinpal'){
-            $this->gateway = new Zarinpal();
-        }
-        elseif($gateway == 'mellat'){
-            $this->gateway = new Mellat();
-        }
+    public function setGateway(Gateway $gateway){
+        $this->gateway = $gateway;
     }
 
     public function addInfo($info){
-        if($this->gateway instanceof Zarinpal){
-            $this->gateway->setInfo($info);
-        }
-        elseif($this->gateway instanceof Mellat){
-            $this->gateway->addInfo($info);
-        }
+        $this->gateway->setInfo($info);
     }
 
     public function pay(){
-        if($this->gateway instanceof Zarinpal){
-            return $this->gateway->payment();
-        }
-        elseif($this->gateway instanceof Mellat){
-            return $this->gateway->pay();
-        }
+        return $this->gateway->pay();
     }
 }
 
 $payment = new payment();
-$payment->gateway('zarinpal');
+$payment->setGateway(new Mellat());
 $payment->addInfo(['name' => 'jamal' , 'price' => 1000]);
 var_dump($payment->pay());
