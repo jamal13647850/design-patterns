@@ -64,3 +64,58 @@ $prideWithZevareDar = new ZevareDar($pride);
 $prideWithZevareDarAndSunRoof = new SunRoof($prideWithZevareDar);
 echo $prideWithZevareDarAndSunRoof->cost();
 echo $prideWithZevareDarAndSunRoof->description();
+
+
+interface  HtmlElement{
+    public function toHTML();
+    public function getName();
+}
+
+class InputText implements HtmlElement {
+
+    protected $name;
+    function __construct($name)
+    {
+        $this->name = $name;
+    }
+
+    public function toHTML()
+    {
+        return "<input type='text' name='".$this->name."' placeholder='فیلد را پر نمایید' id='".$this->name."'>";
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+}
+
+abstract class HtmlDecorator implements HtmlElement{
+    protected  $element;
+    function __construct(HtmlElement $element)
+    {
+        $this->element = $element;
+    }
+    abstract public function toHTML();
+    public function getName(){
+        return $this->element->getName();
+    }
+}
+
+class LabelDecorator extends HtmlDecorator{
+
+    protected $label;
+    public function setLabel($label){
+        $this->label = $label;
+    }
+
+    public function toHTML()
+    {
+        return "<label for='".$this->getName()."'>$this->label</label>".$this->element->toHTML();
+    }
+}
+
+$input = new InputText("firstName");
+$lablled = new LabelDecorator($input);
+$lablled->setLabel("first name: ");
+echo $lablled->toHTML();
